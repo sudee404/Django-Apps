@@ -33,10 +33,11 @@ class MyUserManager(BaseUserManager):
 
 class MyUser(AbstractBaseUser):
     # This is a custom user model
+    first_name = models.CharField(max_length=30,null=True)
+    last_name = models.CharField(max_length=30,null=True)
+    username = models.CharField(max_length=30,unique=True)
     email = models.EmailField(unique=True)
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
-    dob = models.DateField(verbose_name="date of birth")
+    dob = models.DateField(verbose_name="date of birth",null=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
@@ -47,6 +48,18 @@ class MyUser(AbstractBaseUser):
     REQUIRED_FIELDS = ['first_name', 'last_name', 'dob']
 
     objects = MyUserManager()
+    
+    def has_module_perms(self, app_label):
+        """
+        Return True if the user has any permissions in the given app label.
+        """
+        return True
+
+    def has_perm(self, perm, obj=None):
+        """
+        Return True if the user has the specified permission.
+        """
+        return True
 
     def get_full_name(self):
         return f'{self.first_name} {self.last_name}'
