@@ -1,11 +1,11 @@
-from django.contrib.auth.views import PasswordResetView
+from django.contrib.auth import views as auth_views, get_user_model
+from django.contrib.auth.views import PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView, PasswordResetView
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth import login
 from django.shortcuts import render, redirect, reverse
 from user_auth.models import MyUser
-from .forms import RegisterForm, LoginForm
+from .forms import RegisterForm, LoginForm, CustomSetPasswordForm
 
 
 def register_view(request):
@@ -45,8 +45,8 @@ def logout_view(request):
 
 
 class MyPasswordResetView(PasswordResetView):
-    template_name = 'password_reset_form.html'
-    email_template_name = 'password_reset_email.html'
+    template_name = 'my_password_reset_form.html'
+    email_template_name = 'my_password_reset_email.html'
     success_url = reverse_lazy('password_reset_done')
 
     def form_valid(self, form):
@@ -57,3 +57,26 @@ class MyPasswordResetView(PasswordResetView):
         except MyUser.DoesNotExist:
             messages.warning(self.request, 'No user found with this email')
             return self.form_invalid(form)
+
+
+
+class MyPasswordResetDoneView(PasswordResetDoneView):
+    template_name = 'my_password_reset_done.html'
+
+
+class MyPasswordResetConfirmView(PasswordResetConfirmView):
+    template_name = 'my_password_reset_confirm.html'
+    form_class = CustomSetPasswordForm
+    success_url = reverse_lazy('password_reset_complete')
+    post_reset_login = True
+
+    def form_valid(self, form):
+        print("valid")
+        form.save()
+        return super().form_valid(form)
+
+
+
+
+class MyPasswordResetCompleteView(PasswordResetCompleteView):
+    template_name = 'my_password_reset_complete.html'

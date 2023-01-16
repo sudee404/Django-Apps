@@ -15,7 +15,7 @@ class MyUserAdmin(UserAdmin):
             'fields': ('email', 'first_name', 'last_name', 'password1', 'password2'),
         }),
     )
-    list_display = ('email', 'first_name', 'last_name',
+    list_display = ('username', 'email',
                     'is_staff', 'is_active')
     list_filter = ('is_staff', 'is_superuser', 'is_active')
     search_fields = ('email', 'first_name', 'last_name')

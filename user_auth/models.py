@@ -63,6 +63,9 @@ class MyUser(AbstractBaseUser):
 
     def get_full_name(self):
         return f'{self.first_name} {self.last_name}'
+    
+    def __str__(self):
+        return self.username
 
     def save(self, *args, **kwargs):
         self.email = self.email.lower()

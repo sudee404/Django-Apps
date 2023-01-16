@@ -8,7 +8,7 @@
 	<meta name="description" content="" />
 	<meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors" />
 	<meta name="generator" content="Hugo 0.72.0" />
-	<title>Carousel Template · Bootstrap</title>
+	<title>Account</title>
 
 	<link rel="canonical" href="https://v5.getbootstrap.com/docs/5.0/examples/carousel/" />
 
@@ -26,13 +26,14 @@
 </head>
 
 <body>
-	<main >
-		
+	<main>
+
 		<div class="section">
 			<div class="container">
 				<div class="row full-height justify-content-center">
 					<div class="col-12 text-center align-self-center py-5">
 						<div class="section pb-5 pt-5 pt-sm-2 text-center">
+							{% block main %}
 							<h6 class="mb-0 pb-3"><span>Log In </span><span>Sign Up</span></h6>
 							<input class="checkbox" type="checkbox" id="reg-log" name="reg-log" />
 							<label for="reg-log"></label>
@@ -42,6 +43,7 @@
 									{% include "register.html" %}
 								</div>
 							</div>
+							{% endblock main %}
 						</div>
 					</div>
 				</div>
