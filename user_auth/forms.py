@@ -20,23 +20,7 @@ class RegisterForm(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # Set css class and placeholder for each field
-        
-        # for field_name, field in self.fields.items():
-        #     field.widget.attrs.update({'class': 'form-style'})
-        #     if field_name == 'username':
-        #         field.widget.attrs.update(
-        #             {'placeholder': "Your Username"})
-        #     if field_name == 'email':
-        #         field.widget.attrs.update(
-        #             {'placeholder': "Your Email"})
-        #     if field_name == 'new_password1':
-        #         field.widget.attrs.update(
-        #             {'placeholder': "Your Password"})
-        #     if field_name == 'new_password2':
-        #         field.widget.attrs.update(
-        #             {'placeholder': "Confirm Password"})
-    
+         
     class Meta:
         model = MyUser
         fields = ('email', 'username')

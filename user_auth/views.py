@@ -1,23 +1,25 @@
-from django.contrib.auth import views as auth_views, get_user_model
 from django.contrib.auth.views import PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView, PasswordResetView
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect
+from django.http import JsonResponse
 from user_auth.models import MyUser
 from .forms import RegisterForm, LoginForm, CustomSetPasswordForm
 
 
 def register_view(request):
+
     if request.method == 'POST':
         form = RegisterForm(request.POST)
         if form.is_valid():
-            user = form.save()
+            user = form.save(commit=True)
             login(request, user)
-            return redirect('home')
-    else:
-        form = RegisterForm()
-    return render(request, 'base_form.html', {'form': form})
+            return JsonResponse({'status': 'success'})
+        print('form manenoz')
+        return JsonResponse({'status': 'error', 'errors': form.errors})
+    print('outside')
+    return render(request, 'base_form.html', {})
 
 
 def login_view(request):
@@ -29,12 +31,12 @@ def login_view(request):
             user = authenticate(request, email=email, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('home')
+                return JsonResponse({'status': 'success'})
             else:
                 form.add_error(None, "Invalid email or password")
-    else:
-        form = LoginForm()
-    return render(request, 'base_form.html', {'form': form})
+
+        return JsonResponse({'status': 'error', 'errors': form.errors})
+    return render(request, 'base_form.html', {})
 
 
 def logout_view(request):
@@ -59,7 +61,6 @@ class MyPasswordResetView(PasswordResetView):
             return self.form_invalid(form)
 
 
-
 class MyPasswordResetDoneView(PasswordResetDoneView):
     template_name = 'my_password_reset_done.html'
 
@@ -74,8 +75,6 @@ class MyPasswordResetConfirmView(PasswordResetConfirmView):
         print("valid")
         form.save()
         return super().form_valid(form)
-
-
 
 
 class MyPasswordResetCompleteView(PasswordResetCompleteView):

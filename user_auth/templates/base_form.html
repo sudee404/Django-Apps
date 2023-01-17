@@ -23,11 +23,16 @@
 		crossorigin="anonymous"></script>
 	<!-- Custom styles for this template -->
 	<link href="{% static 'css/user_style.css' %}" rel="stylesheet" />
+
 </head>
 
 <body>
 	<main>
+		{% if user.is_authenticated %}
+		<div id="login-check" data-authenticated='true'></div>
+		<div id="home-url" data-url="{% url 'index' %}"></div>
 
+		{% endif %}
 		<div class="section">
 			<div class="container">
 				<div class="row full-height justify-content-center">
@@ -37,7 +42,7 @@
 							<h6 class="mb-0 pb-3"><span>Log In </span><span>Sign Up</span></h6>
 							<input class="checkbox" type="checkbox" id="reg-log" name="reg-log" />
 							<label for="reg-log"></label>
-							<div class="card-3d-wrap mx-auto">
+							<div class="card-3d-wrap mx-auto mb-4">
 								<div class="card-3d-wrapper">
 									{% include "login.html" %}
 									{% include "register.html" %}
@@ -55,6 +60,8 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
 		integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
 		crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-toast-plugin@1.3.2/dist/jquery.toast.min.css" />
+	<script src="https://cdn.jsdelivr.net/npm/jquery-toast-plugin@1.3.2/dist/jquery.toast.min.js"></script>
 	<script src="{% static 'js/user_main.js' %}"></script>
 </body>
 
