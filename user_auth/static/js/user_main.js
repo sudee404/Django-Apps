@@ -1,19 +1,32 @@
 $(document).ready(function () {
 	loginCheck();
 });
+/**
+ * Check if the user is authenticated on page load.
+ * If the user is authenticated, display a warning toast and redirect the user back to the previous page.
+ * If the previous page cannot be found, redirect the user to the homepage.
+ */
 function loginCheck() {
 	let check = $("#login-check");
 	if (check.data("authenticated") === true) {
+		let homeUrl = $("#home-url").data("url");
 		setTimeout(() => {
 			createToast(
 				"Warning",
 				"You are already logged in, redirecting ",
 				"warning",
-				redirectToPreviousPage
+				() => {
+					if (document.referrer) {
+						window.history.back();
+					} else {
+						window.location.href = homeUrl;
+					}
+				}
 			);
 		}, 1000);
 	}
 }
+
 function clearForm() {
 	var formErrors = document.querySelectorAll(".invalid-feedback");
 	formErrors.forEach((element) => {
@@ -153,6 +166,6 @@ function redirectToPreviousPage() {
 		} else {
 			window.location.href = homeUrl;
 		}
-	}, 2000);
+	}, 3000);
 }
 

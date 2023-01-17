@@ -9,20 +9,32 @@ from .forms import RegisterForm, LoginForm, CustomSetPasswordForm
 
 
 def register_view(request):
-
+    """
+    Handles user registration.
+    On GET request, it renders the registration template.
+    On POST request, it validates the form data, creates a new user and logs them in.
+    If the form is not valid, it returns a JSON response with the status 'error' and the form errors.
+    On successful registration, it returns a JSON response with the status 'success'.
+    """
     if request.method == 'POST':
         form = RegisterForm(request.POST)
         if form.is_valid():
             user = form.save(commit=True)
             login(request, user)
             return JsonResponse({'status': 'success'})
-        print('form manenoz')
         return JsonResponse({'status': 'error', 'errors': form.errors})
-    print('outside')
     return render(request, 'base_form.html', {})
 
 
+
 def login_view(request):
+    """
+    Handles user login.
+    On GET request, it renders the login template.
+    On POST request, it validates the form data  and logs them in.
+    If the form is not valid, it returns a JSON response with the status 'error' and the form errors.
+    On successful login, it returns a JSON response with the status 'success'.
+    """
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
