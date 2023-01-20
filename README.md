@@ -1,8 +1,8 @@
 # Django-Apps
-
 This django project contains convenient django web applications that 
 you can just plug into your project and have it running with a few tweaks.
 Apps available include the following
+
 ---
 ## Custom User authentication
 This is a custom user implementation with the following features:
