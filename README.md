@@ -12,4 +12,4 @@ This is a custom user implementation with the following features:
 -Log in is by email and not username
 
 You can download the app you want and simply insert into your system. 
-The documentation will guid you on how to customise it and make it your own
+The documentation will guide you on how to customise it and make it your own
