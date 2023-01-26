@@ -39,5 +39,6 @@ def chat_view(request, room_name):
     context = {}
     context['users'] = User.objects.exclude(pk=request.user.id)
     context['room_name'] = room_name
+    context['chat_name'] = [name for name in room_name.split('_') if name != request.user.username][0]
     context['messages'] = Message.objects.filter(chat_room__name = room_name)
     return render(request, 'chat_room.html', context)
