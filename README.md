@@ -13,3 +13,6 @@ This is a custom user implementation with the following features:
 
 You can download the app you want and simply insert into your system. 
 The documentation will guide you on how to customise it and make it your own
+
+---
+## Real time chat application
