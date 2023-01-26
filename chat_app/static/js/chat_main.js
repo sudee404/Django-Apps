@@ -1,4 +1,17 @@
-$(".messages").animate({ scrollTop: $(document).height() }, "fast");
+$(document).ready(function () {
+	$(".messages").animate({ scrollTop: $(".messages ul").height() }, "slow");
+	// rest of the script
+	try {
+		const roomName = JSON.parse(
+			document.getElementById("room-name").textContent
+		);
+		if (roomName) {
+			loadRoom(roomName);
+		}
+	} catch (error) {
+		console.log(error.message);
+	}
+});
 
 $("#profile-img").click(function () {
 	$("#status-options").toggleClass("active");
@@ -32,27 +45,34 @@ $("#status-options ul li").click(function () {
 	$("#status-options").removeClass("active");
 });
 
-try {
-	const roomName = JSON.parse(
-		document.getElementById("room-name").textContent
-	);
-	if (roomName) {
-		loadRoom(roomName);
-	}
-} catch (error) {}
-
-function newMessage(message) {
+function newMessage(message, sender) {
 	if ($.trim(message) == "") {
 		return false;
 	}
-	$(
-		'<li class="sent"><img src="http://emilcarlsson.se/assets/mikeross.png" alt="" /><p>' +
-			message +
-			"</p></li>"
-	).appendTo($(".messages ul"));
+	try {
+		const userEmail = JSON.parse(
+			document.getElementById("user-email").textContent
+		);
+		if (userEmail === sender) {
+			$(
+				'<li class="sent"><img src="http://emilcarlsson.se/assets/mikeross.png" alt="" /><p>' +
+					message +
+					"</p></li>"
+			).appendTo($(".messages ul"));
+		} else {
+			$(
+				'<li class="replies"><img src="http://emilcarlsson.se/assets/mikeross.png" alt="" /><p>' +
+					message +
+					"</p></li>"
+			).appendTo($(".messages ul"));
+		}
+	} catch (error) {
+		console.log(error.message);
+	}
+
 	$(".message-input input").val(null);
-	$(".contact.active .preview").html("<span>You: </span>" + message);
-	$(".messages").animate({ scrollTop: $(document).height() }, "fast");
+	// $(".contact.active .preview").html("<span>You: </span>" + message);
+	$(".messages").animate({ scrollTop: $(".messages ul").height() }, "fast");
 }
 
 function loadRoom(roomName) {
@@ -62,7 +82,7 @@ function loadRoom(roomName) {
 
 	chatSocket.onmessage = function (e) {
 		const data = JSON.parse(e.data);
-		newMessage(data.message);
+		newMessage(data.message, data.sender);
 	};
 
 	chatSocket.onclose = function (e) {
@@ -72,13 +92,13 @@ function loadRoom(roomName) {
 	$(".message-input input").focus();
 
 	$(".submit").click(function () {
-		const message = $(".message-input input").val();
+		var msgInput = $(".message-input input");
+		const message = msgInput.val();
 		chatSocket.send(
 			JSON.stringify({
 				message: message,
 			})
 		);
-		messageInputDom.value = "";
 	});
 
 	$(window).on("keydown", function (e) {

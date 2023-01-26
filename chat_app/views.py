@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.http import HttpResponse,HttpResponseNotFound
 from .models import Message, ChatRoom
 from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
 
 User = get_user_model()
 
@@ -33,8 +34,10 @@ def get_room(request, pk1):
             return HttpResponse("You are not authorized to view this chat room.")
     return HttpResponseNotFound("Chat not found.")
 
+@login_required(redirect_field_name='chat-view',login_url='login')
 def chat_view(request, room_name):
     context = {}
     context['users'] = User.objects.exclude(pk=request.user.id)
     context['room_name'] = room_name
+    context['messages'] = Message.objects.filter(chat_room__name = room_name)
     return render(request, 'chat_room.html', context)

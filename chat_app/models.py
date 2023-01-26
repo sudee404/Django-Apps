@@ -12,10 +12,13 @@ class Message(models.Model):
     read = models.BooleanField(default=False)
 
     class Meta:
-        ordering = ['-timestamp']
+        ordering = ['timestamp']
         verbose_name = 'Message'
         verbose_name_plural = 'Messages'
 
+    @property
+    def is_owner(self):
+        return self.sender == self.request.user
 
 class ChatRoom(models.Model):
     """Model for chat room
@@ -27,5 +30,6 @@ class ChatRoom(models.Model):
     is_private = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
 
+    
     def get_absolute_url(self):
         return reverse("chat-view", kwargs={"room_name": self.id})
