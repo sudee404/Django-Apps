@@ -14,7 +14,7 @@ django-braces==1.15.0
 django-model-utils==4.3.1
 django-private-chat==0.3.0
 hyperlink==21.0.0
-idna==3.4
+idna==3.7
 incremental==22.10.0
 Pillow==9.4.0
 pyasn1==0.4.8
